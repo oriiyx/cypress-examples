@@ -1,0 +1,18 @@
+{
+  "name": "cypress-wp-demo",
+  "version": "1.0.0",
+  "description": "Cypress wordpress demonstration.",
+  "scripts": {
+    "cy:run": "npx cypress run",
+    "cy:open": "npx cypress open",
+    "cy:run:dev": "npx cypress run -C cypress.dev.json",
+    "cy:open:dev": "npx cypress open -C cypress.dev.json",
+    "cy:run:local": "npx cypress run -C cypress.local.json",
+    "cy:open:local": "npx cypress open -C cypress.local.json"
+  },
+  "author": "Peter Paravinja",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^10.1.0"
+  }
+}
