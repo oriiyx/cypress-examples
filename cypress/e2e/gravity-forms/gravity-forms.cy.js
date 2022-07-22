@@ -1,29 +1,23 @@
 // <reference types="cypress"/>
 
-const firstName = 'John';
-const lastName = 'Doe';
-const email = 'info@test.com';
-const conformation = 'Thanks for contacting us! We will get in touch with you shortly.';
-
 context('Gravity Form 2 Step Tests', () => {
-    //Use the cy.fixture() method to pull data from fixture file
-    before(function () {
-        cy.fixture('forms').then(function (data) {
-            this.data = data;
-        })
-    })
-
+    let forms;
     beforeEach(() => {
         cy.visit('/2-step-form-example/');
+        //Use the cy.fixture() method to pull data from fixture file
+        cy.fixture('forms').then((formsData) => {
+            forms = formsData;
+        })
     });
 
     it('2 Step Form has correct visibility', () => {
+        console.log(forms);
         cy.get('#gform_1').should('be.visible');
         cy.get('#gform_page_1_2').should('not.be.visible');
     });
 
     it('Check Validation for first step form', () => {
-        cy.get('.name-field  input').type(firstName + ' ' + lastName);
+        cy.get('.name-field  input').type(forms.firstName + ' ' + forms.lastName);
         cy.get('.dropdown-field  select').select('first');
         cy.get('#gform_next_button_1_1').click({force: true});
 
@@ -35,8 +29,8 @@ context('Gravity Form 2 Step Tests', () => {
 
     it('Complete the 2 step form', () => {
 
-        cy.get('.name-field  input').type(firstName + ' ' + lastName);
-        cy.get('.email-field  input').type(email);
+        cy.get('.name-field  input').type(forms.firstName + ' ' + forms.lastName);
+        cy.get('.email-field  input').type(forms.email);
         cy.get('.dropdown-field  select').select('first');
         cy.get('#gform_next_button_1_1').click({force: true});
 
@@ -50,14 +44,20 @@ context('Gravity Form 2 Step Tests', () => {
 
         cy.wait(500);
 
-        cy.checkConfirmationContent(conformation);
+        cy.checkConfirmationContent(forms.conformation);
     });
 })
 
 
 context('Contact Form Tests', () => {
+    let forms;
+
     beforeEach(() => {
         cy.visit('/contact-us/');
+        //Use the cy.fixture() method to pull data from fixture file
+        cy.fixture('forms').then((formsData) => {
+            forms = formsData;
+        })
     });
 
     it('Contact Form has correct visibility', () => {
@@ -65,9 +65,9 @@ context('Contact Form Tests', () => {
     });
 
     it('Complete the contact form', () => {
-        cy.get('.name_first  input').type(firstName);
-        cy.get('.name_last  input').type(lastName);
-        cy.get('.ginput_container_email  input').type(email);
+        cy.get('.name_first  input').type(forms.firstName);
+        cy.get('.name_last  input').type(forms.lastName);
+        cy.get('.ginput_container_email  input').type(forms.email);
         cy.get('.ginput_container_phone  input').type('000 000 000');
         cy.get('.ginput_container_textarea  textarea').type('Give some cake.');
         cy.confirmCaptcha();
@@ -75,7 +75,7 @@ context('Contact Form Tests', () => {
         cy.submitGravityForm();
         // cy.screenshot('actions/forms/contact-us-after-submit');
         cy.wait(500);
-        cy.checkConfirmationContent(conformation);
+        cy.checkConfirmationContent(forms.conformation);
     });
 })
 
